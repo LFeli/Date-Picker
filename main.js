@@ -16,6 +16,7 @@ document.addEventListener('click', (event) => {
   if (!DATE_PICKER_CONTAINER.contains(event.target) && event.target !== DATE_PICKER_TRIGGER) {
     // Close the date picker
     DATE_PICKER.classList.add('hidden');
+    DATE_PICKER.classList.add('showElement');
   }
 });
 
@@ -25,22 +26,41 @@ DATE_PICKER_TRIGGER.addEventListener('click', () => {
 });
 
 
-DAYS_TAGS.forEach( day => {
+DAYS_TAGS.forEach(day => {
   day.addEventListener('click', (event) => {
-    const SELECTED_DAY = event.target.innerText
-    const { YEAR, MONTH } = extractMonthAndYear(CURRENT_MOUTH_AND_YEAR.innerText)
-    const mouthIndex = getNumOfMouth(MONTH, MONTHS)
-    const selectedDateForInput = `${SELECTED_DAY}/${mouthIndex}/${YEAR}`
-    const selectedDateForShow = `${SELECTED_DAY} de ${MONTH} de ${YEAR}`
+    const SELECTED_DAY = event.target;
 
-    const showTextForUser = document.getElementById('textUser')
-    showTextForUser.classList.remove('text-zinc-500')
-    showTextForUser.classList.add('text-zinc-50')
-    showTextForUser.textContent = selectedDateForShow
+    // Remova a classe 'bg-zinc-100' de todos os dias
+    DAYS_TAGS.forEach(otherDay => {
+      if (otherDay !== SELECTED_DAY) {
+        otherDay.classList.remove('bg-zinc-100');
+        otherDay.classList.add('text-zinc-200'); // Adicione a classe de texto padrão de volta
+        otherDay.classList.remove('text-zinc-800'); // Remova a classe de texto extra
+      }
+    });
+
+    // Adicione a classe 'bg-zinc-100' apenas ao dia clicado
+    SELECTED_DAY.classList.add('bg-zinc-100');
+    SELECTED_DAY.classList.remove('text-zinc-200');
+    SELECTED_DAY.classList.add('text-zinc-800');
+
+    console.log(SELECTED_DAY);
+
+    const SELECTED_DAY_VALUE = event.target.innerText;
+    const { YEAR, MONTH } = extractMonthAndYear(CURRENT_MOUTH_AND_YEAR.innerText);
+    const mouthIndex = getNumOfMouth(MONTH, MONTHS);
+    const selectedDateForInput = `${SELECTED_DAY_VALUE}/${mouthIndex}/${YEAR}`;
+    const selectedDateForShow = `${SELECTED_DAY_VALUE} de ${MONTH} de ${YEAR}`;
+
+    const showTextForUser = document.getElementById('textUser');
+    showTextForUser.classList.remove('text-zinc-500');
+    showTextForUser.classList.add('text-zinc-50');
+    showTextForUser.textContent = selectedDateForShow;
+
     DATE_PICKER.classList.add('hidden');
-    console.log(selectedDateForInput, selectedDateForShow)
-  })
-})
+    console.log(selectedDateForInput, selectedDateForShow);
+  });
+});
 
 
 
