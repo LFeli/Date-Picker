@@ -35,7 +35,7 @@
 </head>
 <body class="w-screen h-screen bg-zinc-950 text-white flex flex-col items-center justify-center gap-8">
 
-  <div class="relative -mt-40">
+  <div id="datePickerContainer" class="relative -mt-40">
     <button id="dataPickerTrigger">
       <span 
       class="py-2 px-3 w-80 rounded-md text-sm flex items-center gap-2 bg-zinc-950 border border-zinc-800 hover:bg-zinc-800 transition-colors">
@@ -46,7 +46,7 @@
 
     <input type="date" class="sr-only">
   
-    <article class="w-80 py-2 px-3 rounded-md absolute -bottom-[353px] border border-zinc-800">
+    <article id="dataPicker" class="w-80 py-2 px-3 rounded-md absolute -bottom-[353px] border border-zinc-800 hidden">
       <!-- Calendar top -->
       <div class="flex items-center justify-between">
         <p id="current-date" class="font-semibold">Janeiro 2024</p>
