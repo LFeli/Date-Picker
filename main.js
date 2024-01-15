@@ -25,6 +25,7 @@ document.addEventListener('click', (event) => {
 // Event listener for trigger button click
 DATE_PICKER_TRIGGER.addEventListener('click', () => {
   DATE_PICKER.classList.toggle('hidden');
+  DATE_PICKER.classList.add('showElement');
 });
 
 
