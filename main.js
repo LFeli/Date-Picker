@@ -36,16 +36,26 @@ DAYS_TAGS.forEach(day => {
     // Remova a classe 'bg-zinc-100' de todos os dias
     DAYS_TAGS.forEach(otherDay => {
       if (otherDay !== SELECTED_DAY) {
+
         otherDay.classList.remove('bg-zinc-100');
-        otherDay.classList.add('text-zinc-200'); // Adicione a classe de texto padrão de volta
-        otherDay.classList.remove('text-zinc-800'); // Remova a classe de texto extra
+        otherDay.classList.remove('bg-zinc-800');
+        otherDay.classList.remove('text-zinc-800');
+        otherDay.classList.remove('text-zinc-600');
+        otherDay.classList.add('text-zinc-200');
       }
     });
 
     // Adicione a classe 'bg-zinc-100' apenas ao dia clicado
-    SELECTED_DAY.classList.add('bg-zinc-100');
-    SELECTED_DAY.classList.remove('text-zinc-200');
-    SELECTED_DAY.classList.add('text-zinc-800');
+    if (SELECTED_DAY.getAttribute('data-inactive') === 'true') {
+      // Adiciona o estilo adicional para inativos
+      SELECTED_DAY.classList.add('bg-zinc-800');
+      SELECTED_DAY.classList.add('text-zinc-600');
+    } else {
+      SELECTED_DAY.classList.add('bg-zinc-100');
+      SELECTED_DAY.classList.remove('text-zinc-200');
+      SELECTED_DAY.classList.add('text-zinc-800');
+    }
+
 
     console.log(SELECTED_DAY);
 
@@ -95,7 +105,7 @@ function renderCalendar() {
 
   // Adiciona os dias do mês anterior
   for (let i = GET_FIRST_DAY_OF_MONTH; i > 0; i--) {
-    liTag += ` <li data-inactive class="hover:bg-zinc-800 rounded py-2 cursor-pointer transition-colors text-zinc-500 ">${GET_LASTS_DAYS_OF_PREVIOUS_MONTH - i + 1}</li>`;
+    liTag += ` <li data-inactive="true" class="hover:bg-zinc-800 rounded py-2 cursor-pointer transition-colors text-zinc-500 ">${GET_LASTS_DAYS_OF_PREVIOUS_MONTH - i + 1}</li>`;
   }
 
   // Adiciona os dias do mês atual
@@ -107,13 +117,13 @@ function renderCalendar() {
       YEAR === new Date().getFullYear() ? 'active' : '';
 
     liTag += isToday === 'active' ? 
-      ` <li data-today class="bg-zinc-700 hover:bg-zinc-800 rounded py-2 cursor-pointer transition-colors text-zinc-200 hover:text-zinc-200">${i}</li>` :
+      ` <li data-today="true" class="bg-zinc-700 hover:bg-zinc-800 rounded py-2 cursor-pointer transition-colors text-zinc-200 hover:text-zinc-200">${i}</li>` :
       ` <li class="hover:bg-zinc-800 rounded py-2 cursor-pointer transition-colors text-zinc-200 hover:text-zinc-200">${i}</li>`;
   }
 
   // Adiciona os dias da próxima semana, se necessário
   for (let i = GET_FIRSTS_DAYS_OF_NEXT_MONTH; i < 6; i++) {
-    liTag += ` <li data-inactive class="hover:bg-zinc-800 rounded py-2 cursor-pointer transition-colors text-zinc-500 ">${i - GET_FIRSTS_DAYS_OF_NEXT_MONTH + 1}</li>`;
+    liTag += ` <li data-inactive="true" class="hover:bg-zinc-800 rounded py-2 cursor-pointer transition-colors text-zinc-500 ">${i - GET_FIRSTS_DAYS_OF_NEXT_MONTH + 1}</li>`;
   }
 
   // console.log(liTag);
