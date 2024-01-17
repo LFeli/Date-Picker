@@ -9,7 +9,6 @@ let GET_DATE = new Date();
 let GET_CURRENT_YEAR = GET_DATE.getFullYear();
 let GET_CURRENT_MONTH = GET_DATE.getMonth();
 const CURRENT_MONTH_AND_YEAR = document.getElementById('currentMonthAndYear')
-const FORMATTED_MONTH_INDEX = formateIndex(GET_CURRENT_MONTH);
 
 const PREVIOUS_AND_NEXT_BUTTON = document.querySelectorAll('#buttons button')
 
@@ -133,6 +132,7 @@ document.querySelectorAll('#calendarDays').forEach(day => {
 
       console.log(SELECTED_DAY);
 
+      const FORMATTED_MONTH_INDEX = formateIndex(GET_CURRENT_MONTH);
       let selectedDateForInput = `${SELECTED_DAY_VALUE}/${FORMATTED_MONTH_INDEX}/${GET_CURRENT_YEAR}`;
       let selectedDateForShow = `${SELECTED_DAY_VALUE} de ${MONTHS[GET_CURRENT_MONTH]} de ${GET_CURRENT_YEAR}`;
 
