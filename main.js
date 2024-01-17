@@ -5,8 +5,9 @@ const DATE_PICKER_TRIGGER = document.getElementById('dataPickerTrigger');
 const DATE_PICKER = document.getElementById('dataPicker');
 const MONTHS = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
 
-let GET_CURRENT_YEAR = new Date().getFullYear();
-let GET_CURRENT_MONTH = new Date().getMonth();
+let GET_DATE = new Date();
+let GET_CURRENT_YEAR = GET_DATE.getFullYear();
+let GET_CURRENT_MONTH = GET_DATE.getMonth();
 const CURRENT_MONTH_AND_YEAR = document.getElementById('currentMonthAndYear')
 const FORMATTED_MONTH_INDEX = formateIndex(GET_CURRENT_MONTH);
 
@@ -97,7 +98,7 @@ function renderCalendar() {
   // Adiciona os dias do mês atual
   for (let i = 1; i <= GET_LAST_DAY_OF_MONTH; i++) {
     let isToday =
-      i === new Date().getDate() &&
+      i === GET_DATE.getDate() &&
       GET_FIRST_DAY_OF_MONTH === new Date(GET_CURRENT_YEAR, GET_CURRENT_MONTH, 1).getDay() &&
       GET_CURRENT_MONTH === new Date().getMonth() &&
       GET_CURRENT_YEAR === new Date().getFullYear() ? 'active' : '';
@@ -114,6 +115,7 @@ function renderCalendar() {
 
   // console.log(liTag);
 
+  CURRENT_MONTH_AND_YEAR.innerText = `${MONTHS[GET_CURRENT_MONTH]} ${GET_CURRENT_YEAR}`
   document.getElementById('calendarDays').innerHTML = liTag
 
   console.log('GET_FIRST_DAY_OF_MOnth',GET_FIRST_DAY_OF_MONTH );
@@ -123,10 +125,22 @@ function renderCalendar() {
   console.log(GET_CURRENT_YEAR, GET_CURRENT_MONTH);
 }
 
-// function previousAndNextButton () {
-//   PREVIOUS_AND_NEXT_BUTTON.forEach( button => {
-//     button.addEventListener('click', () => {
+  PREVIOUS_AND_NEXT_BUTTON.forEach( button => {
+    button.addEventListener('click', () => {
+      GET_CURRENT_MONTH = button.id === 'prev' ?
+        GET_CURRENT_MONTH - 1 :
+        GET_CURRENT_MONTH + 1;
 
-//     })
-//   } )
-// }
+        console.log(GET_CURRENT_MONTH);
+
+      if( GET_CURRENT_MONTH < 0 || GET_CURRENT_MONTH > 11) {
+        GET_DATE = new Date(GET_CURRENT_YEAR, GET_CURRENT_MONTH)
+        GET_CURRENT_YEAR = GET_DATE.getFullYear()
+        GET_CURRENT_MONTH = GET_DATE.getMonth()
+      } else {
+        GET_DATE = new Date()
+      }
+
+      renderCalendar()
+    })
+  } )
