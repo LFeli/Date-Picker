@@ -31,51 +31,6 @@ DATE_PICKER_TRIGGER.addEventListener('click', () => {
   DATE_PICKER.classList.add('showElement');
 });
 
-
-DAYS_TAGS.forEach(day => {
-  day.addEventListener('click', (event) => {
-    const SELECTED_DAY = event.target;
-
-    // Remova a classe 'bg-zinc-100' de todos os dias
-    DAYS_TAGS.forEach(otherDay => {
-      if (otherDay !== SELECTED_DAY) {
-
-        otherDay.classList.remove('bg-zinc-100');
-        otherDay.classList.remove('bg-zinc-800');
-        otherDay.classList.remove('text-zinc-800');
-        otherDay.classList.remove('text-zinc-600');
-        otherDay.classList.add('text-zinc-200');
-      }
-    });
-
-    // Adicione a classe 'bg-zinc-100' apenas ao dia clicado
-    if (SELECTED_DAY.getAttribute('data-inactive') === 'true') {
-      // Adiciona o estilo adicional para inativos
-      SELECTED_DAY.classList.add('bg-zinc-800');
-      SELECTED_DAY.classList.add('text-zinc-600');
-    } else {
-      SELECTED_DAY.classList.add('bg-zinc-100');
-      SELECTED_DAY.classList.remove('text-zinc-200');
-      SELECTED_DAY.classList.add('text-zinc-800');
-    }
-
-
-    console.log(SELECTED_DAY);
-
-    const SELECTED_DAY_VALUE = event.target.innerText;
-    const selectedDateForInput = `${SELECTED_DAY_VALUE}/${FORMATTED_MONTH_INDEX}/${GET_CURRENT_YEAR}`;
-    const selectedDateForShow = `${SELECTED_DAY_VALUE} de ${MONTHS[GET_CURRENT_MONTH]} de ${GET_CURRENT_YEAR}`;
-
-    const showTextForUser = document.getElementById('textUser');
-    showTextForUser.classList.remove('text-zinc-500');
-    showTextForUser.classList.add('text-zinc-50');
-    showTextForUser.textContent = selectedDateForShow;
-
-    DATE_PICKER.classList.add('hidden');
-    console.log(selectedDateForInput, selectedDateForShow);
-  });
-});
-
 function formateIndex(index) {
   const monthIndexFormatted = index < 10 ? `0${index + 1}` : `${index + 1}`;
 
@@ -125,22 +80,69 @@ function renderCalendar() {
   console.log(GET_CURRENT_YEAR, GET_CURRENT_MONTH);
 }
 
-  PREVIOUS_AND_NEXT_BUTTON.forEach( button => {
-    button.addEventListener('click', () => {
-      GET_CURRENT_MONTH = button.id === 'prev' ?
-        GET_CURRENT_MONTH - 1 :
-        GET_CURRENT_MONTH + 1;
+PREVIOUS_AND_NEXT_BUTTON.forEach( button => {
+  button.addEventListener('click', () => {
+    GET_CURRENT_MONTH = button.id === 'prev' ?
+      GET_CURRENT_MONTH - 1 :
+      GET_CURRENT_MONTH + 1;
 
-        console.log(GET_CURRENT_MONTH);
+      console.log(GET_CURRENT_MONTH);
 
-      if( GET_CURRENT_MONTH < 0 || GET_CURRENT_MONTH > 11) {
-        GET_DATE = new Date(GET_CURRENT_YEAR, GET_CURRENT_MONTH)
-        GET_CURRENT_YEAR = GET_DATE.getFullYear()
-        GET_CURRENT_MONTH = GET_DATE.getMonth()
+    if( GET_CURRENT_MONTH < 0 || GET_CURRENT_MONTH > 11) {
+      GET_DATE = new Date(GET_CURRENT_YEAR, GET_CURRENT_MONTH)
+      GET_CURRENT_YEAR = GET_DATE.getFullYear()
+      GET_CURRENT_MONTH = GET_DATE.getMonth()
+    } else {
+      GET_DATE = new Date()
+    }
+
+    renderCalendar()
+  })
+})
+
+document.querySelectorAll('#calendarDays').forEach(day => {
+  day.addEventListener('click', (event) => {
+    const SELECTED_DAY = event.target;
+    let SELECTED_DAY_VALUE = event.target.innerText;
+    let cleanedValue = SELECTED_DAY_VALUE.replace(/\s/g, '');
+
+    if (/^\d{1,2}$/.test(cleanedValue)) {
+      console.log(SELECTED_DAY)
+
+      DAYS_TAGS.forEach(otherDay => {
+        if (otherDay !== SELECTED_DAY) {
+
+          otherDay.classList.remove('bg-zinc-100');
+          otherDay.classList.remove('bg-zinc-800');
+          otherDay.classList.remove('text-zinc-800');
+          otherDay.classList.remove('text-zinc-600');
+          otherDay.classList.add('text-zinc-200');
+        }
+      });
+
+      if (SELECTED_DAY.getAttribute('data-inactive') === 'true') {
+        // Adiciona o estilo adicional para inativos
+        SELECTED_DAY.classList.add('bg-zinc-800');
+        SELECTED_DAY.classList.add('text-zinc-600');
       } else {
-        GET_DATE = new Date()
+        SELECTED_DAY.classList.add('bg-zinc-100');
+        SELECTED_DAY.classList.remove('text-zinc-200');
+        SELECTED_DAY.classList.add('text-zinc-800');
       }
 
-      renderCalendar()
-    })
-  } )
+
+      console.log(SELECTED_DAY);
+
+      let selectedDateForInput = `${SELECTED_DAY_VALUE}/${FORMATTED_MONTH_INDEX}/${GET_CURRENT_YEAR}`;
+      let selectedDateForShow = `${SELECTED_DAY_VALUE} de ${MONTHS[GET_CURRENT_MONTH]} de ${GET_CURRENT_YEAR}`;
+
+      const showTextForUser = document.getElementById('textUser');
+      showTextForUser.classList.remove('text-zinc-500');
+      showTextForUser.classList.add('text-zinc-50');
+      showTextForUser.textContent = selectedDateForShow;
+
+      DATE_PICKER.classList.add('hidden');
+      console.log(selectedDateForInput, selectedDateForShow);
+    } 
+  });
+});
